@@ -1,0 +1,69 @@
+extends layout
+
+block extraheader
+    script.
+        $(document).ready(function () {
+
+            // $.fn.editable.defaults.mode = 'inline';
+
+            // event handlers
+            $("#select-category").change(function() {
+                //console.log("category selected: " + el);
+                getContractors($("#select-contractor"));
+
+            });
+
+            $("#preview-and-render").submit(function(ev) {
+                //console.log(ev);
+                var cancellationDate = $("#select-cancellation-date").val(),
+                    contractor = $("#select-contractor").val(),
+                    category = $("#select-category").val();
+                console.log(cancellationDate + ',' + contractor + ',' + category);
+                renderPDF({
+                    "cancellation date": cancellationDate,
+                    "contractor": contractor,
+                    "category": category
+                });
+            });
+
+        });
+
+
+block content
+    div(class="col-md-4")
+        form(id="preview-and-render", method="post")
+            div(class="form-group")
+                if categories
+                    select(id="select-category", class="form-control",
+                        name="category")
+                        each category in categories
+                            option= category
+
+            div(hidden="hidden", class="form-group")
+                select(id="select-contractor", class="form-control",
+                    name="contractor")
+
+            div(class="form-group")
+                input(type="date", id="select-cancellation-date",
+                    value="#{last_of_month}",
+                    placeholder="Kündigungsdatum",
+                    name="cancellation-date")
+
+            div(class="form-group")
+                button(class="btn btn-warning" type="submit").
+                    Preview
+
+            div(class="form-group")
+                button(class="btn btn-danger" type="submit").
+                    Render
+
+
+    if preview
+        div(class="col-md-4" id="preview")
+    else
+        div(class="col-md-4" hidden="hidden" id="preview")
+
+    if render
+        div(class="col-md-4" id="render")
+    else
+        div(class="col-md-4" hidden="hidden" id="render")
