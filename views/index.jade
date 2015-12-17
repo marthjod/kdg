@@ -40,14 +40,9 @@ block content
                     placeholder="Kunden-/Vertragsnr.",
                     class="form-control")
 
-            if preview
-                div(id="preview", class="form-group")
-                    textarea(class="form-control", rows="10", wrap="wrap",
-                        id="text-preview", spellcheck="false")
-            else
-                div(hidden="hidden" id="preview", class="form-group")
-                    textarea(class="form-control", rows="10", wrap="wrap"
-                        id="text-preview", spellcheck="false")
+            div(hidden="hidden" id="preview", class="form-group")
+                textarea(class="form-control", rows="10", wrap="wrap"
+                    id="text-preview", spellcheck="false")
 
             div(class="form-group")
                 if categories

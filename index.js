@@ -58,17 +58,8 @@ app.get('/human-date', function(req, res) {
 });
 
 app.all('/', function(req, res, next) {
-    var preview = false,
-        render = false;
-
-    if (req.query) {
-        if (req.query['render']) {
-            render = req.query.render == 1 ? true : false;
-        }
-    }
 
     res.render('index', {
-        render: render,
         categories: categories,
         last_of_month: getLastOfMonth(),
         customer_reference: customerReference
