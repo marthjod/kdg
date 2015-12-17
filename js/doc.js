@@ -4,7 +4,7 @@ var renderPDF = function(data) {
 
     var category = data["category"],
         contractor = data["contractor"],
-        cancellationDate = data["cancellation date"];
+        cancellationDate = data["cancellationDate"];
 
     var doc = {
         styles: {

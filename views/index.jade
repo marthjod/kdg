@@ -6,24 +6,32 @@ block extraheader
 
             // $.fn.editable.defaults.mode = 'inline';
 
+            getHumanDate($("#select-cancellation-date").val(), function(res) {
+                $("#select-cancellation-date").attr("data-human-date", res);
+            });
+
             // event handlers
             $("#select-category").change(function() {
                 //console.log("category selected: " + el);
                 getContractors($("#select-contractor"));
+            });
 
+            $("#select-cancellation-date").change(function() {
+                getHumanDate($(this).val(),
+                    function(res) {
+                        $(this).attr("data-human-date", res);
+                    });
             });
 
             $("#preview-and-render").submit(function(ev) {
-                //console.log(ev);
-                var cancellationDate = $("#select-cancellation-date").val(),
-                    contractor = $("#select-contractor").val(),
-                    category = $("#select-category").val();
-                console.log(cancellationDate + ',' + contractor + ',' + category);
-                renderPDF({
-                    "cancellation date": cancellationDate,
-                    "contractor": contractor,
-                    "category": category
-                });
+                var vars = {
+                    contractor: $("#select-contractor").val(),
+                    category: $("#select-category").val(),
+                    cancellationDate: $("#select-cancellation-date").attr("data-human-date")
+                };
+
+                console.log(vars);
+                renderPDF(vars);
             });
 
         });
@@ -50,18 +58,8 @@ block content
                     name="cancellation-date")
 
             div(class="form-group")
-                button(class="btn btn-warning" type="submit").
-                    Preview
-
-            div(class="form-group")
                 button(class="btn btn-danger" type="submit").
                     Render
-
-
-    if preview
-        div(class="col-md-4" id="preview")
-    else
-        div(class="col-md-4" hidden="hidden" id="preview")
 
     if render
         div(class="col-md-4" id="render")

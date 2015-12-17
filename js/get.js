@@ -11,3 +11,12 @@ var getContractors = function (select) {
         });
     });
 };
+
+var getHumanDate = function(yyyyMMDD, callback) {
+    "use strict";
+
+    $.get('/human-date', {'lastOfMonth': yyyyMMDD}, function (res) {
+        callback(res);
+    });
+
+}
