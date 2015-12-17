@@ -52,14 +52,17 @@ app.get('/contractors', function(req, res) {
     res.json(contractors);
 });
 
-app.get('/human-date', function(req, res) {
-    var m = moment(req.query.lastOfMonth, "YYYY-MM-DD");
-    res.send(getLastOfMonth('human', m));
-});
+// app.get('/human-date', function(req, res) {
+//     var m = moment(req.query.lastOfMonth, "YYYY-MM-DD");
+//     res.send(getLastOfMonth('human', m));
+// });
 
 app.all('/', function(req, res, next) {
 
+    preview = req.method === 'POST' ? true : false;
+
     res.render('index', {
+        preview: preview,
         categories: categories,
         last_of_month: getLastOfMonth(),
         customer_reference: customerReference

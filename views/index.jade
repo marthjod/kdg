@@ -4,13 +4,19 @@ block extraheader
     script.
         $(document).ready(function () {
 
+            // if (#{preview}) {
+            //     $("#preview").removeAttr("hidden");
+            // }
+
             // event handlers
             $("#select-category").change(function() {
                 //console.log("category selected: " + el);
                 getContractors($("#select-contractor"));
             });
 
-            $("#btn-preview").click(function() {
+            $("#btn-preview").click(function(ev) {
+                ev.preventDefault();
+
                 if (!$("#preview").is(":visible")) {
                     $("#preview").removeAttr("hidden");
                 }
