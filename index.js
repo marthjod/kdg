@@ -15,13 +15,17 @@ app.set('view engine', 'jade');
 
 
 var categories = ['Telefon', 'Versicherung'],
-    contractors = ['ACME', 'BCME'],
+    contractors = [
+        'ACME Corp.\nSome Street 23\n12345 Berlin',
+        'BCME\nSome Street 23\n12345 Berlin'
+    ],
     customerReference = 'MM-01234-56',
     customerName = 'Darth Vader';
 
 var previewText = {
     header: [
-        "An {{ contractor }}"
+        "An ",
+        "{{ contractor }}"
     ],
     subject: [
         "Vertragskündigung {{ category }} (Ref.: {{ customerReference }})"
@@ -68,11 +72,6 @@ app.get('/contractors', function(req, res) {
     res.json(contractors);
 });
 
-// app.get('/human-date', function(req, res) {
-//     var m = moment(req.query.lastOfMonth, "YYYY-MM-DD");
-//     res.send(getLastOfMonth('human', m));
-// });
-
 app.all('/', function(req, res, next) {
 
     preview = req.method === 'POST' ? true : false;
@@ -87,33 +86,39 @@ app.all('/', function(req, res, next) {
 });
 
 app.post('/preview', function(req, res) {
-    var header = previewText.header.join("\n"),
-        subject = previewText.subject.join("\n"),
-        body = previewText.body.join("\n");
 
     var vars = req.body;
     vars.cancellationDate = getLocaleDate(vars.cancellationDate);
     vars['customerName'] = customerName;
 
+    var header = rendered(previewText.header.join("\n"), vars),
+        subject = rendered(previewText.subject.join("\n"), vars),
+        body = rendered(previewText.body.join("\n"), vars);
+
     res.json({
         'textData': [
-            rendered(header, vars),
-            rendered(subject, vars),
-            rendered(body, vars)
+            header,
+            subject,
+            body
         ].join("\n\n")
     });
 });
 
 app.post('/render', function(req, res) {
 
-    // use these data to split correctly
-    console.log(req.body);
+    var vars = req.body;
+    vars.cancellationDate = getLocaleDate(vars.cancellationDate);
+    vars['customerName'] = customerName;
+
+    var header = rendered(previewText.header.join("\n"), vars),
+        subject = rendered(previewText.subject.join("\n"), vars),
+        body = rendered(previewText.body.join("\n"), vars);
 
     res.json({
         'pdfData': {
-            'header': 'header',
-            'subject': 'subject line',
-            'body': 'document body'
+            header: header,
+            subject: subject,
+            body: body
         }
     });
 });

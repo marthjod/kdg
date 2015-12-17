@@ -38,7 +38,14 @@ block extraheader
             $("#btn-render").click(function(ev) {
                 ev.preventDefault();
 
-                render({}, function (res) {
+                var vars = {
+                    category: $("#select-category").val(),
+                    contractor: $("#select-contractor").val(),
+                    cancellationDate: $("#select-cancellation-date").val(),
+                    customerReference: $("#customer-reference").val()
+                };
+
+                render(vars, function (res) {
                     renderPDF(res.pdfData);
                 });
             });

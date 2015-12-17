@@ -20,13 +20,16 @@ var renderPDF = function(data) {
     var doc = {
         styles: {
             subject: {
-                fontSize: 14,
+                fontSize: 12,
                 bold: true
             }
         },
         content: [
             data.header,
+            '\n\n',
+            { text: new Date().toLocaleDateString('de-DE'), alignment: 'right'},
             { text: data['subject'], style: 'subject' },
+            '\n\n',
             data.body
         ]
     };
