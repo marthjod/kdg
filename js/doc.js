@@ -1,5 +1,5 @@
 
-var renderPDF = function(header, subject, body) {
+var renderPDF = function(data) {
     "use strict";
 
 //     var category = data["category"],
@@ -15,8 +15,9 @@ var renderPDF = function(header, subject, body) {
 
 // var cancellationDate = "1/1/2021";
 
+    // console.log(data['subject']);
 
-   var doc = {
+    var doc = {
         styles: {
             subject: {
                 fontSize: 14,
@@ -24,12 +25,12 @@ var renderPDF = function(header, subject, body) {
             }
         },
         content: [
-            { text: header },
-            { text: subject, style: subject },
-            { text: body }
+            data.header,
+            { text: data['subject'], style: 'subject' },
+            data.body
         ]
     };
 
-    pdfMake.createPdf(doc).open();
+    pdfMake.createPdf(doc).download(); //.open(); has a bug
 };
 

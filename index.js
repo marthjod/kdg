@@ -14,24 +14,34 @@ app.set('views', __dirname + '/views')
 app.set('view engine', 'jade');
 
 
-var categories = ['Telefon', 'Versicherung'];
-var contractors = ['ACME', 'BCME'];
-var customerReference = 'MM-01234-56';
+var categories = ['Telefon', 'Versicherung'],
+    contractors = ['ACME', 'BCME'],
+    customerReference = 'MM-01234-56',
+    customerName = 'Darth Vader';
 
-var previewText = '\n \
-\n \
-\n \
-Vertragskündigung {{ data.contractor }}\n \
-\n \
-\n \
-Sehr geehrte Damen und Herren, \n \
-\n \
-hiermit kündige ich meinen zum {{ data.cancellationDate }}. \n \
-\n \
-Mit freundlichen Grüßen \n \
-\n \
-\n \
-';
+var previewText = {
+    header: [
+        "An {{ contractor }}"
+    ],
+    subject: [
+        "Vertragskündigung {{ category }} (Ref.: {{ customerReference }})"
+    ],
+    body: [
+        "Sehr geehrte Damen und Herren,",
+        "",
+        "hiermit kündige ich meinen Vertrag zum {{ cancellationDate }}.",
+        "",
+        "Mit freundlichen Grüßen",
+        "{{ customerName }}"
+    ]
+};
+
+var getLocaleDate = function (m) {
+    if (typeof m === 'string') {
+        m = moment(m);
+    }
+    return m.locale('de').format('LL');
+};
 
 var getLastOfMonth = function(fmt, m) {
     "use strict";
@@ -42,10 +52,16 @@ var getLastOfMonth = function(fmt, m) {
     }
 
     if (fmt === 'human') {
-        return m.locale('de').format('LL');
+        return getLocaleDate(m);
     }
 
     return m.format("YYYY-MM-DD");
+};
+
+var rendered = function(templateStr, vars) {
+    "use strict";
+
+    return nunjucks.renderString(templateStr, vars);
 };
 
 app.get('/contractors', function(req, res) {
@@ -64,18 +80,41 @@ app.all('/', function(req, res, next) {
     res.render('index', {
         preview: preview,
         categories: categories,
-        last_of_month: getLastOfMonth(),
-        customer_reference: customerReference
+        lastOfMonth: getLastOfMonth(),
+        customerReference: customerReference,
+        customerName: customerName
     })
 });
 
-app.get('/preview', function(req, res) {
-    var data = req.body;
-    console.log(data);
+app.post('/preview', function(req, res) {
+    var header = previewText.header.join("\n"),
+        subject = previewText.subject.join("\n"),
+        body = previewText.body.join("\n");
+
+    var vars = req.body;
+    vars.cancellationDate = getLocaleDate(vars.cancellationDate);
+    vars['customerName'] = customerName;
 
     res.json({
-        'textData': nunjucks.renderString(previewText, {}),
-        'pdfData': {}
+        'textData': [
+            rendered(header, vars),
+            rendered(subject, vars),
+            rendered(body, vars)
+        ].join("\n\n")
+    });
+});
+
+app.post('/render', function(req, res) {
+
+    // use these data to split correctly
+    console.log(req.body);
+
+    res.json({
+        'pdfData': {
+            'header': 'header',
+            'subject': 'subject line',
+            'body': 'document body'
+        }
     });
 });
 

@@ -12,10 +12,4 @@ var getContractors = function (select) {
     });
 };
 
-var getPreview = function (div, data, callback) {
-    "use strict";
 
-    $.get('/preview', data, function (res) {
-        callback(res);
-    });
-};

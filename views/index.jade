@@ -21,13 +21,24 @@ block extraheader
                     $("#preview").removeAttr("hidden");
                 }
 
-                getPreview($("#preview"), {}, function (res) {
-                    $("#preview").find("textarea").text(res.textData);
+                var vars = {
+                    category: $("#select-category").val(),
+                    contractor: $("#select-contractor").val(),
+                    cancellationDate: $("#select-cancellation-date").val(),
+                    customerReference: $("#customer-reference").val()
+                };
+
+                preview(vars, function (res) {
+                    var textarea = $("#preview").find("textarea");
+                    textarea.attr("rows", 1.5 * res.textData.split('\n').length);
+                    textarea.text(res.textData);
                 });
             });
 
-            $("#btn-render").click(function() {
-                getPreview($("#preview"), {}, function (res) {
+            $("#btn-render").click(function(ev) {
+                ev.preventDefault();
+
+                render({}, function (res) {
                     renderPDF(res.pdfData);
                 });
             });
@@ -42,9 +53,10 @@ block content
         form(id="preview-and-render", method="post")
 
             div(class="form-group")
-                input(type="text", value="#{customer_reference}",
+                input(type="text", value="#{customerReference}",
                     placeholder="Kunden-/Vertragsnr.",
-                    class="form-control")
+                    class="form-control",
+                    id="customer-reference")
 
             div(hidden="hidden" id="preview", class="form-group")
                 textarea(class="form-control", rows="10", wrap="wrap"
@@ -63,7 +75,7 @@ block content
 
             div(class="form-group")
                 input(type="date", id="select-cancellation-date",
-                    value="#{last_of_month}",
+                    value="#{lastOfMonth}",
                     placeholder="Kündigungsdatum",
                     name="cancellation-date",
                     class="form-control")
