@@ -68,31 +68,22 @@ var rendered = function(templateStr, vars) {
     return nunjucks.renderString(templateStr, vars);
 };
 
-var buildResponse = function(req) {
-    "use strict";
-
-    var vars = req.body;
-
-};
-
-
 
 app.get('/contractors', function(req, res) {
     res.json(contractors);
 });
 
-app.all('/', function(req, res, next) {
 
-    preview = req.method === 'POST' ? true : false;
+app.get('/', function(req, res, next) {
 
     res.render('index', {
-        preview: preview,
         categories: categories,
         lastOfMonth: getLastOfMonth(),
         customerReference: customerReference,
         customerName: customerName
     })
 });
+
 
 app.post('/preview', function(req, res) {
 
@@ -111,13 +102,12 @@ app.post('/preview', function(req, res) {
     });
 });
 
+
 app.post('/render', function(req, res) {
 
     var vars = req.body;
     vars.cancellationDate = getLocaleDate(vars.cancellationDate);
     vars['customerName'] = customerName;
-
-    console.log(vars);
 
     res.json({
         header: vars.header,
@@ -125,6 +115,7 @@ app.post('/render', function(req, res) {
         body: vars.body
     });
 });
+
 
 var server = app.listen(3000, function () {
     var port = server.address().port;
