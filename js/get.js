@@ -12,6 +12,13 @@ var getContractors = function (select) {
     });
 };
 
+var getPreview = function (select) {
+    "use strict";
+
+
+
+}
+
 var getHumanDate = function(yyyyMMDD, callback) {
     "use strict";
 

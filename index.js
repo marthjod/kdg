@@ -15,6 +15,7 @@ app.set('view engine', 'jade');
 
 var categories = ['Telefon', 'Versicherung'];
 var contractors = ['ACME', 'BCME'];
+var customerReference = 'MM-01234-56';
 
 var get_last_of_month = function(fmt) {
     "use strict";
@@ -47,7 +48,8 @@ app.all('/', function(req, res, next) {
     res.render('index', {
         render: render,
         categories: categories,
-        last_of_month: get_last_of_month()
+        last_of_month: get_last_of_month(),
+        customer_reference: customerReference
     })
 });
 

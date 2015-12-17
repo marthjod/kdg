@@ -6,6 +6,8 @@ block extraheader
 
             // $.fn.editable.defaults.mode = 'inline';
 
+            // pre-fill
+
             getHumanDate($("#select-cancellation-date").val(), function(res) {
                 $("#select-cancellation-date").attr("data-human-date", res);
             });
@@ -39,7 +41,21 @@ block extraheader
 
 block content
     div(class="col-md-4")
+
+        h3 Kündigungsmanager
+
         form(id="preview-and-render", method="post")
+
+            div(class="form-group")
+                input(type="text", value="#{customer_reference}",
+                    placeholder="Kunden-/Vertragsnr.")
+
+            if preview
+                div(id="preview")
+                    textarea(rows="20", cols="20", wrap="wrap")
+            else
+                div(hidden="hidden" id="preview")
+
             div(class="form-group")
                 if categories
                     select(id="select-category", class="form-control",
