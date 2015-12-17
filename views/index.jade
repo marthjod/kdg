@@ -23,9 +23,9 @@ block extraheader
                 ev.preventDefault();
 
                 var vars = {
-                    header: $("#preview-header").find("textarea").text(),
-                    subject: $("#preview-subject").find("textarea").text(),
-                    body: $("#preview-body").find("textarea").text(),
+                    header: $("#preview-header").find("textarea").val(),
+                    subject: $("#preview-subject").find("textarea").val(),
+                    body: $("#preview-body").find("textarea").val(),
                     cancellationDate: $("#select-cancellation-date").val()
                 };
 

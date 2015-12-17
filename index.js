@@ -117,6 +117,8 @@ app.post('/render', function(req, res) {
     vars.cancellationDate = getLocaleDate(vars.cancellationDate);
     vars['customerName'] = customerName;
 
+    console.log(vars);
+
     res.json({
         header: vars.header,
         subject: vars.subject,
