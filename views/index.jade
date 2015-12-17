@@ -19,18 +19,14 @@ block extraheader
                 preparePreview();
             });
 
-            $("#btn-preview").click(function(ev) {
-                ev.preventDefault();
-                preparePreview();
-            });
-
             $("#btn-render").click(function(ev) {
                 ev.preventDefault();
 
                 var vars = {
                     header: $("#preview-header").find("textarea").text(),
                     subject: $("#preview-subject").find("textarea").text(),
-                    body: $("#preview-body").find("textarea").text()
+                    body: $("#preview-body").find("textarea").text(),
+                    cancellationDate: $("#select-cancellation-date").val()
                 };
 
                 render(vars, function (res) {
@@ -69,7 +65,7 @@ block content
 
                 select(id="select-category", class="form-control",
                     name="category")
-                    option Auswählen...
+                    option(class="dummy") Auswählen...
                     if categories
                         each category in categories
                             option= category

@@ -105,9 +105,9 @@ app.post('/preview', function(req, res) {
         body = rendered(previewText.body.join("\n"), vars);
 
     res.json({
-        header: header,
-        subject: subject,
-        body: body
+        header: header.replace('Auswählen...', ''),
+        subject: subject.replace('Auswählen...', ''),
+        body: body.replace('Auswählen...', '')
     });
 });
 
@@ -118,11 +118,9 @@ app.post('/render', function(req, res) {
     vars['customerName'] = customerName;
 
     res.json({
-        'pdfData': {
-            header: vars.header,
-            subject: vars.subject,
-            body: vars.body
-        }
+        header: vars.header,
+        subject: vars.subject,
+        body: vars.body
     });
 });
 
