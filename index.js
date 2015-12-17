@@ -1,5 +1,6 @@
 var express = require('express');
 var moment = require('moment');
+var nunjucks = require('nunjucks');
 var bodyParser = require('body-parser')
 
 var app = express();
@@ -16,6 +17,8 @@ app.set('view engine', 'jade');
 var categories = ['Telefon', 'Versicherung'];
 var contractors = ['ACME', 'BCME'];
 var customerReference = 'MM-01234-56';
+
+var previewText = 'Sehr geehrte Damen und Herren';
 
 var get_last_of_month = function(fmt) {
     "use strict";
@@ -51,6 +54,10 @@ app.all('/', function(req, res, next) {
         last_of_month: get_last_of_month(),
         customer_reference: customerReference
     })
+});
+
+app.get('/preview', function(req, res) {
+    res.send(previewText);
 });
 
 

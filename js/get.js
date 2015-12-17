@@ -12,12 +12,13 @@ var getContractors = function (select) {
     });
 };
 
-var getPreview = function (select) {
+var getPreview = function (div) {
     "use strict";
 
-
-
-}
+    $.get('/preview', function (res) {
+        div.find("textarea").text(res);
+    });
+};
 
 var getHumanDate = function(yyyyMMDD, callback) {
     "use strict";

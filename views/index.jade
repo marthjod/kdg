@@ -7,7 +7,6 @@ block extraheader
             // $.fn.editable.defaults.mode = 'inline';
 
             // pre-fill
-
             getHumanDate($("#select-cancellation-date").val(), function(res) {
                 $("#select-cancellation-date").attr("data-human-date", res);
             });
@@ -16,6 +15,13 @@ block extraheader
             $("#select-category").change(function() {
                 //console.log("category selected: " + el);
                 getContractors($("#select-contractor"));
+            });
+
+            $("#select-contractor").change(function() {
+                if (!$("#preview").is(":visible")) {
+                    $("#preview").removeAttr("hidden");
+                    getPreview($("#preview"));
+                }
             });
 
             $("#select-cancellation-date").change(function() {
@@ -48,13 +54,15 @@ block content
 
             div(class="form-group")
                 input(type="text", value="#{customer_reference}",
-                    placeholder="Kunden-/Vertragsnr.")
+                    placeholder="Kunden-/Vertragsnr.",
+                    class="form-control")
 
             if preview
-                div(id="preview")
-                    textarea(rows="20", cols="20", wrap="wrap")
+                div(id="preview", class="form-group")
+                    textarea(class="form-control", rows="10", wrap="wrap", id="text-preview")
             else
-                div(hidden="hidden" id="preview")
+                div(hidden="hidden" id="preview", class="form-group")
+                    textarea(class="form-control", rows="10", wrap="wrap" id="text-preview")
 
             div(class="form-group")
                 if categories
@@ -71,11 +79,16 @@ block content
                 input(type="date", id="select-cancellation-date",
                     value="#{last_of_month}",
                     placeholder="Kündigungsdatum",
-                    name="cancellation-date")
+                    name="cancellation-date",
+                    class="form-control")
 
             div(class="form-group")
-                button(class="btn btn-danger" type="submit").
-                    Render
+                div(class="btn-toolbar")
+                    button(class="btn btn-default pull-left", type="submit").
+                        Preview
+                    button(class="btn btn-warning pull-right", type="submit").
+                        Kündigung generieren
+
 
     if render
         div(class="col-md-4" id="render")

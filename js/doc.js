@@ -6,14 +6,14 @@ var renderPDF = function(data) {
         contractor = data["contractor"],
         cancellationDate = data["cancellationDate"];
 
-var contractor = "Telefónica Germany GmbH & Co. OHG";
+// var contractor = "Telefónica Germany GmbH & Co. OHG";
 var contractorAddress = "Am Bürohochaus 1\n14425 Potsdam";
 var contractorReference = "0163 1234567";
 var contractName = "Handyvertrag";
-var category = "Kategorie";
+// var category = "Kategorie";
 var customer = "Peter Pan";
 
-var cancellationDate = "1/1/2021";
+// var cancellationDate = "1/1/2021";
 
 
    var doc = {
