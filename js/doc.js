@@ -1,49 +1,32 @@
 
-var renderPDF = function(data) {
+var renderPDF = function(header, subject, body) {
     "use strict";
 
-    var category = data["category"],
-        contractor = data["contractor"],
-        cancellationDate = data["cancellationDate"];
+//     var category = data["category"],
+//         contractor = data["contractor"],
+//         cancellationDate = data["cancellationDate"];
 
-// var contractor = "Telefónica Germany GmbH & Co. OHG";
-var contractorAddress = "Am Bürohochaus 1\n14425 Potsdam";
-var contractorReference = "0163 1234567";
-var contractName = "Handyvertrag";
-// var category = "Kategorie";
-var customer = "Peter Pan";
+// // var contractor = "Telefónica Germany GmbH & Co. OHG";
+// var contractorAddress = "Am Bürohochaus 1\n14425 Potsdam";
+// var contractorReference = "0163 1234567";
+// var contractName = "Handyvertrag";
+// // var category = "Kategorie";
+// var customer = "Peter Pan";
 
 // var cancellationDate = "1/1/2021";
 
 
    var doc = {
         styles: {
-            header: {
-                fontSize: 22,
+            subject: {
+                fontSize: 14,
                 bold: true
             }
         },
         content: [
-            'An \n' + contractor + '\n\n' +contractorAddress,
-            '\n\n',
-            {
-                text: 'Vertragskündigung ' + contractorReference, style: 'header'
-            },
-            '\n\n',
-            'Sehr geehrte Damen und Herren,',
-            '\n\n',
-            {
-                text: [
-                    'Hiermit kündige ich meinen '+ contractName + ' zum \n\n',
-                    {
-                        text: cancellationDate, bold: true
-                    }
-                ]
-            },
-            '\nBitte bestätigen Sie die Kündigung schriftlich',
-
-            '\nMit freundlichen ' + customer,
-
+            { text: header },
+            { text: subject, style: subject },
+            { text: body }
         ]
     };
 

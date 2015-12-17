@@ -12,19 +12,10 @@ var getContractors = function (select) {
     });
 };
 
-var getPreview = function (div) {
+var getPreview = function (div, data, callback) {
     "use strict";
 
-    $.get('/preview', function (res) {
-        div.find("textarea").text(res);
-    });
-};
-
-var getHumanDate = function(yyyyMMDD, callback) {
-    "use strict";
-
-    $.get('/human-date', {'lastOfMonth': yyyyMMDD}, function (res) {
+    $.get('/preview', data, function (res) {
         callback(res);
     });
-
-}
+};

@@ -18,13 +18,32 @@ var categories = ['Telefon', 'Versicherung'];
 var contractors = ['ACME', 'BCME'];
 var customerReference = 'MM-01234-56';
 
-var previewText = 'Sehr geehrte Damen und Herren';
+var previewText = '\n \
+\n \
+\n \
+Vertragskündigung {{ data.contractor }}\n \
+\n \
+\n \
+Sehr geehrte Damen und Herren, \n \
+\n \
+hiermit kündige ich meinen zum {{ data.cancellationDate }}. \n \
+\n \
+Mit freundlichen Grüßen \n \
+\n \
+\n \
+';
 
-var get_last_of_month = function(fmt) {
+var getLastOfMonth = function(fmt, m) {
     "use strict";
 
-    var today = new Date(),
-        m = moment(new Date(today.getFullYear(), today.getMonth() + 1, 0));
+    if (!m) {
+        var today = new Date();
+        var m = moment(new Date(today.getFullYear(), today.getMonth() + 1, 0));
+    }
+
+    if (fmt === 'human') {
+        return m.locale('de').format('LL');
+    }
 
     return m.format("YYYY-MM-DD");
 };
@@ -35,7 +54,7 @@ app.get('/contractors', function(req, res) {
 
 app.get('/human-date', function(req, res) {
     var m = moment(req.query.lastOfMonth, "YYYY-MM-DD");
-    res.send(m.locale('de').format('LL'));
+    res.send(getLastOfMonth('human', m));
 });
 
 app.all('/', function(req, res, next) {
@@ -51,15 +70,20 @@ app.all('/', function(req, res, next) {
     res.render('index', {
         render: render,
         categories: categories,
-        last_of_month: get_last_of_month(),
+        last_of_month: getLastOfMonth(),
         customer_reference: customerReference
     })
 });
 
 app.get('/preview', function(req, res) {
-    res.send(previewText);
-});
+    var data = req.body;
+    console.log(data);
 
+    res.json({
+        'textData': nunjucks.renderString(previewText, {}),
+        'pdfData': {}
+    });
+});
 
 var server = app.listen(3000, function () {
     var port = server.address().port;
