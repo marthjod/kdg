@@ -4,49 +4,37 @@ block extraheader
     script.
         $(document).ready(function () {
 
-            // if (#{preview}) {
-            //     $("#preview").removeAttr("hidden");
-            // }
-
             // event handlers
             $("#select-category").change(function() {
                 //console.log("category selected: " + el);
                 getContractors($("#select-contractor"));
+                preparePreview();
+            });
+
+            $("#select-contractor").change(function() {
+                preparePreview();
+            });
+
+            $("#select-cancellation-date").change(function() {
+                preparePreview();
             });
 
             $("#btn-preview").click(function(ev) {
                 ev.preventDefault();
-
-                if (!$("#preview").is(":visible")) {
-                    $("#preview").removeAttr("hidden");
-                }
-
-                var vars = {
-                    category: $("#select-category").val(),
-                    contractor: $("#select-contractor").val(),
-                    cancellationDate: $("#select-cancellation-date").val(),
-                    customerReference: $("#customer-reference").val()
-                };
-
-                preview(vars, function (res) {
-                    var textarea = $("#preview").find("textarea");
-                    textarea.attr("rows", 1.5 * res.textData.split('\n').length);
-                    textarea.text(res.textData);
-                });
+                preparePreview();
             });
 
             $("#btn-render").click(function(ev) {
                 ev.preventDefault();
 
                 var vars = {
-                    category: $("#select-category").val(),
-                    contractor: $("#select-contractor").val(),
-                    cancellationDate: $("#select-cancellation-date").val(),
-                    customerReference: $("#customer-reference").val()
+                    header: $("#preview-header").find("textarea").text(),
+                    subject: $("#preview-subject").find("textarea").text(),
+                    body: $("#preview-body").find("textarea").text()
                 };
 
                 render(vars, function (res) {
-                    renderPDF(res.pdfData);
+                    renderPDF(res);
                 });
             });
         });
@@ -65,9 +53,17 @@ block content
                     class="form-control",
                     id="customer-reference")
 
-            div(hidden="hidden" id="preview", class="form-group")
-                textarea(class="form-control", rows="10", wrap="wrap"
-                    id="text-preview", spellcheck="false")
+            div(hidden="hidden" id="preview-header", class="form-group preview")
+                textarea(class="form-control", wrap="wrap"
+                    spellcheck="false")
+
+            div(hidden="hidden" id="preview-subject", class="form-group preview")
+                textarea(class="form-control", wrap="wrap"
+                    spellcheck="false")
+
+            div(hidden="hidden" id="preview-body", class="form-group preview")
+                textarea(class="form-control", wrap="wrap"
+                    spellcheck="false")
 
             div(class="form-group")
                 if categories
@@ -89,9 +85,7 @@ block content
 
             div(class="form-group")
                 div(class="btn-toolbar")
-                    button(class="btn btn-default pull-left", type="submit",
-                        id="btn-preview").
-                        Preview
+
                     button(class="btn btn-warning pull-right", type="submit",
                         id="btn-render").
                         Kündigung generieren

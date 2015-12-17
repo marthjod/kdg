@@ -16,8 +16,8 @@ app.set('view engine', 'jade');
 
 var categories = ['Telefon', 'Versicherung'],
     contractors = [
-        'ACME Corp.\nSome Street 23\n12345 Berlin',
-        'BCME\nSome Street 23\n12345 Berlin'
+        'ACME Corp.\nWarschauer Str. 177\n11111 Berlin',
+        'Foobar Inc.\nHermannplatz 1A\n12222 Berlin'
     ],
     customerReference = 'MM-01234-56',
     customerName = 'Darth Vader';
@@ -68,6 +68,15 @@ var rendered = function(templateStr, vars) {
     return nunjucks.renderString(templateStr, vars);
 };
 
+var buildResponse = function(req) {
+    "use strict";
+
+    var vars = req.body;
+
+};
+
+
+
 app.get('/contractors', function(req, res) {
     res.json(contractors);
 });
@@ -96,11 +105,9 @@ app.post('/preview', function(req, res) {
         body = rendered(previewText.body.join("\n"), vars);
 
     res.json({
-        'textData': [
-            header,
-            subject,
-            body
-        ].join("\n\n")
+        header: header,
+        subject: subject,
+        body: body
     });
 });
 
@@ -110,15 +117,11 @@ app.post('/render', function(req, res) {
     vars.cancellationDate = getLocaleDate(vars.cancellationDate);
     vars['customerName'] = customerName;
 
-    var header = rendered(previewText.header.join("\n"), vars),
-        subject = rendered(previewText.subject.join("\n"), vars),
-        body = rendered(previewText.body.join("\n"), vars);
-
     res.json({
         'pdfData': {
-            header: header,
-            subject: subject,
-            body: body
+            header: vars.header,
+            subject: vars.subject,
+            body: vars.body
         }
     });
 });
