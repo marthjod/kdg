@@ -31,7 +31,7 @@ app.get('/contractors', function(req, res) {
 
 app.get('/human-date', function(req, res) {
     var m = moment(req.query.lastOfMonth, "YYYY-MM-DD");
-    res.send(m.format('LL'));
+    res.send(m.locale('de').format('LL'));
 });
 
 app.all('/', function(req, res, next) {
