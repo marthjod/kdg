@@ -41,7 +41,7 @@ block content
 
         h2 Kündigungsmanager
 
-        form(id="preview-and-render", method="post")
+        form(id="preview-and-render", method="post", class)
 
             div(class="form-group")
                 input(type="text", value="#{customerReference}",
@@ -51,15 +51,18 @@ block content
 
             div(hidden="hidden" id="preview-header", class="form-group preview")
                 textarea(class="form-control", wrap="wrap"
-                    spellcheck="false")
+                    spellcheck="false", required="required",
+                    placeholder="Anschrift")
 
             div(hidden="hidden" id="preview-subject", class="form-group preview")
                 textarea(class="form-control", wrap="wrap"
-                    spellcheck="false")
+                    spellcheck="false", required="required",
+                    placeholder="Betreff")
 
             div(hidden="hidden" id="preview-body", class="form-group preview")
                 textarea(class="form-control", wrap="wrap"
-                    spellcheck="false")
+                    spellcheck="false", required="required",
+                    placeholder="Kündigungsschreiben")
 
             div(class="form-group")
 
