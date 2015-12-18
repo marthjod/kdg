@@ -17,19 +17,19 @@ app.set('view engine', 'jade');
 
 var categories = ['Telefon', 'Versicherung'],
     contractors = [
-        'ACME Corp.\nWarschauer Str. 177\n11111 Berlin',
+        'Telefónica Germany GmbH & Co. OHG\nAm Bürohochhaus 1\n14425 Potsdam',
         'Foobar Inc.\nHermannplatz 1A\n12222 Berlin'
     ],
-    customerReference = 'MM-01234-56',
+    customerReference = '0163 1234567',
     customerName = 'Darth Vader';
 
 var previewText = {
     header: [
         "An ",
-        "{{ contractor }}"
+        "{{ contractor | safe }}"
     ],
     subject: [
-        "Vertragskündigung {{ category }} (Ref.: {{ customerReference }})"
+        "Vertragskündigung {{ category | safe }} (Ref.: {{ customerReference | safe }})"
     ],
     body: [
         "Sehr geehrte Damen und Herren,",
@@ -37,7 +37,7 @@ var previewText = {
         "hiermit kündige ich meinen Vertrag zum {{ cancellationDate }}.",
         "",
         "Mit freundlichen Grüßen",
-        "{{ customerName }}"
+        "{{ customerName | safe }}"
     ]
 };
 
